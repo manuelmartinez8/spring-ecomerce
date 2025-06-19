@@ -1,0 +1,14 @@
+*.prefs
+src/main/resources/templates/static/js/bootstrap.bundle.js
+src/main/resources/templates/static/js/bootstrap.bundle.js.map
+src/main/resources/templates/static/js/bootstrap.bundle.min.js
+src/main/resources/templates/static/js/bootstrap.bundle.min.js.map
+src/main/resources/templates/static/js/bootstrap.esm.js
+src/main/resources/templates/static/js/bootstrap.esm.js.map
+src/main/resources/templates/static/js/bootstrap.esm.min.js
+src/main/resources/templates/static/js/bootstrap.esm.min.js.map
+src/main/resources/templates/static/js/bootstrap.js
+src/main/resources/templates/static/js/bootstrap.js.map
+src/main/resources/templates/static/js/bootstrap.min.js
+src/main/resources/templates/static/js/bootstrap.min.js.map
+target/
