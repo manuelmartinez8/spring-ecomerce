@@ -108,6 +108,11 @@ public class ProductoController {
 		return "redirect:/productos";
 	}
 	
+	@RequestMapping("listProduct")
+	public String getProducts(Model model) {
+		model.addAttribute("productos", productoService.findAll());
+		return "/views/listProduct";
+	}
 	
 
 }

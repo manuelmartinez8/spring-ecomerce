@@ -7,38 +7,34 @@
 
 	<div class="container">
 	
-	<a class="btn btn-primary btn-sm" th:href="@{/views/np}" th:text="'Nuevo Registro'">
-		
-		</a>
-		<!-- <h1 th:text="${titulo}"></h1> 
-		<p th:text="${listadeproductos}"></p> -->
+	<a class="btn btn-primary btn-sm" th:href="@{/views/np}" th:text="'Nuevo Registro'"></a>		
 
 		<div class="container my-2">
 			<div class="card">
 				<div class="card-body">
-					<div th:switch="${listadeproductos}" class="container my-5">						 
+					<div th:switch="${productos}" class="container my-5">						 
 						<div class="col-md-10">
 							<h2 th:case="null">No record found !!</h2>
 							<div th:case="*">
 								<table class="table table-striped table-responsive-md">
 									<thead class="thead-dark">
 										<tr>
-											<th scope="col">ID</th>
-											<th scope="col">Categoria</th>
-											<th scope="col">Descripcion</th>
-											<th scope="col">Stock</th>	
-											<th scope="col">Editar</th>
-											<th scope="col">Eliminar</th>											 
+											<th scope="col">Nombre</th>
+											<th scope="col">Descripción</th>
+											<th scope="col">Inventario</th>
+											<th scope="col">Precio</th>
+											<th scope="col">Acción</th>
+											<th scope="col">Acción</th>											 
 										</tr>
 									</thead>
 									<tbody>
-										<tr th:each="lp : ${listadeproductos}">
-											<td  scope="row"  th:text="${lp.id}"></td>
-											<td  scope="row" th:text="${lp.categoria}"></td>
+										<tr th:each="lp : ${productos}">
+											<td  scope="row"  th:text="${lp.nombre}"></td>											
 											<td  scope="row" th:text="${lp.descripcion}"></td>
-											<td  scope="row"  th:text="${lp.stock}"></td>
-											<td><a class="btn btn-success btn-sm" th:href="@{/views/edit/} + ${lp.id}" th:text="'Editar Registro'"></td>
-											<td><a class="btn btn-danger btn-sm" th:href="@{/views/delete/} + ${lp.id}" th:text="'Eliminar Registro'" onclick="return confirm('Desea Eliminar Registro?')"></td>
+											<td  scope="row"  th:text="${lp.cantidad}"></td>
+											<td  scope="row" th:text="${lp.precio}"></td>
+											<td><a class="btn btn-success btn-sm" th:href="@{productos/edit/{id} (id=${lp.id}) }">Editar</a> </td>
+											<td><a class="btn btn-danger btn-sm" th:href="@{productos/delete/{id} (id=${lp.id}) }"  th:text="'Eliminar Registro'" onclick="return confirm('Desea Eliminar Registro?')"></td>
 										</tr>
 									</tbody>
 								</table>
