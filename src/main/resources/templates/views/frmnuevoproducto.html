@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template :: head">
+</head>
+<body>
+	<header th:replace="template :: header"></header>
+
+	<div class="container">
+	
+		<div class="card bg-light">
+			<div class="card-header bg-dark text-white" th:text="${titulo}"></div>
+			<div class="card-body">
+				
+		<form th:action="@{/views/saveproduct}" th:object="${producto}" method="post">			
+			<input type="hidden" th:field="*{id}"   id="id"  >
+			<div class="form-group">
+				<div class="col-xs-2">
+				<label for="descripcion" >Descripcion:</label>
+				 <input	type="text" th:field="*{descripcion}" class="form-control" id="descripcion" placeholder="Ingrese la descripcion del Producto">
+				<small class="form-text text-danger" th:if="${#fields.hasErrors('descripcion')}"
+				th:errors="*{descripcion}"> </small>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="stock" class="col-md-2">Stock:</label>
+				 <input type="text" th:field="*{stock}" class="form-control form-control-sm col-md-6" id="stock" placeholder="Ingrese el stock del Producto">
+				<small class="form-text text-danger" th:if="${#fields.hasErrors('stock')}"
+				th:errors="*{stock}"> </small>
+			</div>
+			
+			<div class="form-group row">
+				<label for="categoria" class="col-md-2">Categoria:</label>					
+				 <Select   th:field="*{categoria}" class="form-control form-control-sm col-md-6" id="categoria">
+				 	
+				 	<option th:each="categoria:${categorias}"	
+				 	th:value="${categoria}"			 	
+				 	th:text="${categoria}"
+				 	/> 
+				 </Select>
+				<small class="form-text text-danger" th:if="${#fields.hasErrors('categoria')}"
+				th:errors="*{categoria}"> </small>
+			</div>
+			
+			<div class="card-footer bg-dark">
+			<input type="submit" class="btn btn-primary btn-sm" value="Guardar" />
+			</div>
+			
+		</form>
+		</div>
+			
+		</div>
+	</div>
+	<footer th:replace="template :: footer"></footer>
+</body>
+</html>

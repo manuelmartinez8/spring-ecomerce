@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> 
+<head  th:replace="template :: head">  
+</head>
+<body>
+	 <header th:replace="template :: header"></header>  
+	 
+	<div class="container"> 
+	<a class="btn btn-primary btn-sm" th:href="@{/views/nuv}" th:text="'Nuevo Registro'"></a>
+	 
+		 
+				<div class="card-body">
+					<div th:switch="${listadeusuarios}" class="container my-5">						 
+						<div class="col-md-10">
+							<h2 th:case="null">No record found !!</h2>
+							<div th:case="*">
+								<table class="table table-striped table-responsive-md table-bordered">
+									<thead class="thead-dark">
+										<tr>
+											<th scope="col">ID</th>
+											<th scope="col">Nombre</th>
+											<th scope="col">EMAIL</th>
+											<th scope="col">DIRECCION</th>	
+											<th scope="col">TELEFONO</th>
+											<th scope="col">TIPO</th>											 
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="lp : ${listadeusuarios}">
+											<td scope="row"  th:text="${lp.id}"></td>
+											<td  scope="row" th:text="${lp.nombre}"></td>
+											<td scope="row"  th:text="${lp.email}"></td>
+											<td  scope="row" th:text="${lp.direccion}"></td>
+											<td scope="row"  th:text="${lp.telefono}"></td> 
+											<td scope="row"  th:text="${lp.tipo}"></td> 
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+						</div>
+					</div>
+				</div>
+		 
+		 
+	
+	
+	
+	
+	</div>
+	 	 <footer th:replace="template :: footer" /> 
+</body>
+</html> 

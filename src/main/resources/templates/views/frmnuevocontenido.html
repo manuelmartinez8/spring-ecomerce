@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template :: head">
+</head>
+<body>
+	<header th:replace="template :: header"></header>
+
+	<div class="container">
+	
+		<div class="card bg-light">
+			<div class="card-header bg-dark text-white" th:text="${titulo}"></div>
+			<div class="card-body">
+				
+		<form th:action="@{/views/savecontent}" th:object="${contenido}" method="post">			
+			
+			<div class="form-group">
+				<div class="col-xs-2">
+				<label for="titulo" >Titulo:</label>
+				 <input	type="text" th:field="*{titulo}" class="form-control" id="titulo" placeholder="Ingrese titulo">
+				<small class="form-text text-danger" th:if="${#fields.hasErrors('titulo')}"
+				th:errors="*{titulo}"> </small>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="fuente" class="col-md-2">Fuente:</label>
+				 <input type="text" th:field="*{fuente}" class="form-control form-control-sm col-md-6" id="fuente" placeholder="Ingrese fuente">
+				<small class="form-text text-danger" th:if="${#fields.hasErrors('fuente')}"
+				th:errors="*{fuente}"> </small>
+			</div>
+			
+			<div class="form-group row">
+				<label for="categoria" class="col-md-2">Categoria:</label>					
+				 <Select   th:field="*{categoria}" class="form-control form-control-sm col-md-6" id="categoria">
+				 	
+				 	<option th:each="categoria:${categorias}"	
+				 	th:value="${categoria}"			 	
+				 	th:text="${categoria}"
+				 	/> 
+				 </Select>
+				<small class="form-text text-danger" th:if="${#fields.hasErrors('categoria')}"
+				th:errors="*{categoria}"> </small>
+			</div>
+			
+			
+			<div class="form-group row">
+				<label for="contenido" class="col-md-2">Contenido:</label>
+				 <textarea rows="10" cols="20" type="text" th:field="*{contenido}"
+				  class="form-control form-control-sm col-md-6" id="stock"   />
+				<small class="form-text text-danger" th:if="${#fields.hasErrors('contenido')}"
+				th:errors="*{contenido}"> </small>
+			</div>
+			<hr>
+			<div class="form-group row">
+				<label for="contenido2" class="col-md-2">Contenido 2:</label>
+				 <textarea rows="5" cols="20" type="text" th:field="*{contenido2}"
+				  class="form-control form-control-sm col-md-6" id="stock"   />
+				<small class="form-text text-danger" th:if="${#fields.hasErrors('contenido2')}"
+				th:errors="*{contenido2}"> </small>
+			</div>
+			<hr>
+			<div class="form-group row">
+				<label for="contenido3" class="col-md-2">Contenido3:</label>
+				 <textarea rows="5" cols="20" type="text" th:field="*{contenido3}"
+				  class="form-control form-control-sm col-md-6" id="stock"   />
+				<small class="form-text text-danger" th:if="${#fields.hasErrors('contenido3')}"
+				th:errors="*{contenido3}"> </small>
+			</div>
+			<hr>
+			<div class="form-group row">
+				<label for="contenido4" class="col-md-2">Contenido4:</label>
+				 <textarea rows="5" cols="20" type="text" th:field="*{contenido4}"
+				  class="form-control form-control-sm col-md-6" id="stock"   />
+				<small class="form-text text-danger" th:if="${#fields.hasErrors('contenido4')}"
+				th:errors="*{contenido4}"> </small>
+			</div>
+			<hr>
+			<div class="card-footer bg-dark">
+			<input type="submit" class="btn btn-primary btn-sm" value="Guardar Contenido" />
+			</div>
+			<br/>
+			
+			<br>
+		</form>
+		</div>
+			
+		</div>
+	</div>
+	<footer th:replace="template :: footer"></footer>
+</body>
+</html>
