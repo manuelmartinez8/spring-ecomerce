@@ -22,6 +22,10 @@ public class DetalleOrden {
     
     
     
+	public DetalleOrden() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public DetalleOrden(Integer id, String nombre, double cantidad, double precio, double total) {
 		super();
 		this.id = id;

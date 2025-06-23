@@ -26,6 +26,13 @@ public class Orden {
 	private List<DetalleOrden> detalle;
     
     
+    
+	public Orden() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public Orden(Integer id, String numero, Date fechaCreacion, Date fechaRecibida, double total,  
 			DetalleOrden detalle) {
 		super();
