@@ -1,6 +1,7 @@
 package com.ecomerce.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ecomerce.model.DetalleOrden;
 import com.ecomerce.model.Orden;
 import com.ecomerce.model.Producto;
+import com.ecomerce.model.Usuario;
+import com.ecomerce.service.IDetalleOrdenService;
+import com.ecomerce.service.IOrdenService;
+import com.ecomerce.service.IUsuarioService;
 import com.ecomerce.service.ProductoService;
 
 @Controller
@@ -28,6 +33,15 @@ public class HomeController {
 	
 	@Autowired
 	private ProductoService productoService;
+	
+	@Autowired
+	private IUsuarioService usuarioService;
+	
+	@Autowired
+	private IOrdenService ordenService; 
+	
+	@Autowired
+	private IDetalleOrdenService detalleOrdenService;
 	
 	//esta variable almacena los detalles de la orden
 	List<DetalleOrden> detalles = new ArrayList<>();
@@ -67,14 +81,81 @@ public class HomeController {
 		detalleOrden.setNombre(producto.getNombre());
 		detalleOrden.setTotal(producto.getPrecio()*cantidad);
 		detalleOrden.setProducto(producto);
+		
+		//validar que el producto se añada solo una vez
+		
+		Integer idProducto = producto.getId();
+		boolean ingresado = detalles.stream().anyMatch(p -> p.getProducto().getId()==idProducto);
+		
+		if(!ingresado) {
 		detalles.add(detalleOrden);
+		}
+		
 		sumaTotal=detalles.stream().mapToDouble(dt -> dt.getTotal()).sum();
 		orden.setTotal(sumaTotal);
 		model.addAttribute("cart", detalles);
-		model.addAttribute("orden", orden);
-		
-		
+		model.addAttribute("orden", orden);		
 		return "usuario/carrito";
+	}
+	@GetMapping("/delete/cart/{id}")
+	public String deleteProduct(@PathVariable Integer id, Model model) {
+		//lista actuaalizada de productos
+		double sumaTotal = 0;
+		List<DetalleOrden> ordenesNuevas = new ArrayList<>();
+		for(DetalleOrden detalleorden: detalles) {
+			if(detalleorden.getProducto().getId()!=id) {
+				ordenesNuevas.add(detalleorden);
+			}
+		}
+		//le pasas a la lista global de productos la lista actualizada
+		detalles = ordenesNuevas;
+		
+		sumaTotal=detalles.stream().mapToDouble(dt -> dt.getTotal()).sum();
+		orden.setTotal(sumaTotal);
+		model.addAttribute("cart", detalles);
+		model.addAttribute("orden", orden);	
+		return "usuario/carrito";
+	}
+	
+	@GetMapping("/getCart")
+	public String getCart(Model model) {
+		model.addAttribute("cart", detalles);
+		model.addAttribute("orden", orden);	
+		return "usuario/carrito";
+	}
+	
+	@GetMapping("/order")
+	public String order(Model model) {
+		Usuario usuario = usuarioService.findById(1).get();
+		model.addAttribute("cart", detalles);
+		model.addAttribute("orden", orden);	
+		model.addAttribute("usuario", usuario);	
+		return "usuario/resumenorden";
+	}
+	
+	@GetMapping("/saveOrder")
+	public String saveOrder(Model model) {
+		Usuario usuario = usuarioService.findById(1).get();
+		Date fechaCreacion = new Date();
+		orden.setFechaCreacion(fechaCreacion);
+		orden.setNumero(ordenService.generarNumeroOrden());
+		orden.setUsuario(usuario);
+		
+		ordenService.save(orden);
+		
+		//model.addAttribute("usuario", usuario);
+		//guardar detalles
+		
+		for(DetalleOrden dt:detalles) {
+			dt.setOrden(orden);
+			detalleOrdenService.save(dt);
+		}
+		
+		//limpiar los valores de la lista para que el usuario siga comprando
+		orden = new Orden();
+		detalles.clear();
+		
+		return "redirect:/";
 	}
 
 }
