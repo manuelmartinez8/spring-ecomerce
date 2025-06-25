@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"> 
-<head th:replace="usuario/template_usuario.html :: head"/>
+<head th:replace="usuario/template_usuario.html :: head">
+	<meta charset="utf-8">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">	
+</head>
 <body>
-	 <div th:include="usuario/template_usuario.html::header"/>
+	 <div th:include="usuario/template_usuario.html::header" th:if="${sesion==null}"></div>
+	 <div th:include="usuario/template_usuario.html::header-user" th:unless="${sesion==null}"></div>
 		 
 	  
 	<div class="container">
 
 		<div class="row text-center">
-			<h1>welcome to the HOME Usuario f</h1>
+			
+			<header class="jumbotron my-4">
+				<h1 class="display-3">Spring Ecommerce</h1>
+				<p class="lead">Tu tienda de productos en linea </p>
+			</header>
+			
 			<div class="col-lg-3 col-md-6 mb-4" th:each="producto: ${productos}">
 				<div class="card h-100">
 					<img class="card-img-top" th:src="@{/images/{img} (img=${producto.imagen})} " alt="">

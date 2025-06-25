@@ -22,7 +22,7 @@ import com.ecomerce.service.IUsuarioService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/views/")
+@RequestMapping("/usuario/")
 public class UsuarioController {
 	
 	
@@ -34,11 +34,49 @@ public class UsuarioController {
 	@Autowired
 	private IOrdenService ordenService;
 	
+	@GetMapping("/registro")
+	public String create() {
+		return "usuario/registro";
+	}
+	
+	@PostMapping("/save")
+	public String save(Usuario usuario) {		 
+		logger.info("!!!!!!!!!!!!!EL USUARIO ES: {}", usuario);
+		usuario.setTipo("USER");
+		usuarioService.save(usuario);
+		return "redirect:/";		
+	} 
+	
+	@GetMapping("/login")
+	public String login() {
+		return "usuario/login";
+	}
+	
+	@PostMapping("/acceder")
+	public String acceder(Usuario usuario, HttpSession session) {
+		//logger.info("Accesos : {}", usuario);
+		
+		Optional<Usuario> user=usuarioService.findByEmail(usuario.getEmail());
+		logger.info("Usuario de DB : {}", user.get());
+		
+		if (user.isPresent()) {
+			session.setAttribute("idusuario", user.get().getId());			
+			if (user.get().getTipo().equals("ADMIN")) {
+				return "redirect:/administrador";
+			}else {
+				return "redirect:/";
+			}
+		}else {
+			logger.info("Usuario no existe");
+		}		
+		return "redirect:/";
+	}
+	
+	
 	@RequestMapping("listUser")
 	public String getUser(Model model) {
 		//List<User> allUser = new ArrayList<User>();
 		//allUser=service.getAllUser();
-
 		model.addAttribute("titulo", "Los Usuarios");
 		model.addAttribute("listadeusuarios",  usuarioService.findAll());
 		return "/views/listUser";
@@ -65,31 +103,8 @@ public class UsuarioController {
 		return "redirect:/views/listUser";		
 	} 
 	
-	@GetMapping("/login")
-	public String login() {
-		return "usuario/login";
-	}
-	@PostMapping("/acceder")
-	public String acceder(Usuario usuario, HttpSession session) {
-		logger.info("Accesos : {}", usuario);
-		
-		Optional<Usuario> user=usuarioService.findByEmail(usuario.getEmail());
-		//logger.info("Usuario de db: {}", user.get());
-		
-		if (user.isPresent()) {
-			session.setAttribute("idusuario", user.get().getId());
-			
-			if (user.get().getTipo().equals("ADMIN")) {
-				return "redirect:/administrador";
-			}else {
-				return "redirect:/";
-			}
-		}else {
-			logger.info("Usuario no existe");
-		}
-		
-		return "redirect:/";
-	}
+
+
 	
 	@GetMapping("/compras")
 	public String obtenerCompras(Model model, HttpSession session) {

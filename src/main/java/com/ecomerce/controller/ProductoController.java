@@ -21,6 +21,8 @@ import com.ecomerce.service.IUsuarioService;
 import com.ecomerce.service.ProductoService;
 import com.ecomerce.service.UploadFileService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/productos")
 public class ProductoController {
@@ -48,10 +50,10 @@ public class ProductoController {
 	}
 	
 	@PostMapping("/save")
-	public String save(Producto producto, @RequestParam("img") MultipartFile file ) throws IOException {
+	public String save(Producto producto, @RequestParam("img") MultipartFile file, HttpSession session) throws IOException {
 		LOGGER.info("ESTE ES EL PRODUCTO{}", producto); 
-		Usuario u = new Usuario(1);
-		producto.setUsuario(u);		
+		Usuario usuario = usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
+		producto.setUsuario(usuario);		
 		//imagen
 		if(producto.getId() == null) { //en caso de que sea un nuevo producto
 		String nombreImagen = upload.saveImage(file);

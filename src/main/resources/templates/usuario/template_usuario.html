@@ -10,58 +10,65 @@
 </head>
 
 <body>
-	<!-- Desarrollo originado del canal de  JAVACODE  -->
-	<!-- SpringBoot+Jpa+Thymleaf -->
-	<!-- BARRA DE NAVEGACION
-	<header th:fragment="header">  -->
-
 	<div th:fragment="header">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
 			<div class="container">
-				<a class="navbar-brand" th:href="@{/}"><strong>Spring eComerce</strong></a>
+				<a class="navbar-brand" th:href="@{/}"><strong>Spring eComerce Sin Loguear</strong></a>
+				<form class="d-flex" role="search" method="post" th:action="@{/search}">
+					<input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search"
+						name="nombre" autocomplete="off">
+					<button class="btn btn-outline-success " type="submit">Buscar</button>
+				</form>
+
+				<!-- ENLACES DEL MENU -->
+				<div class="collapse navbar-collapse" id="navbarResponsive">
+									<ul class="navbar-nav ml-auto">
+										<li class="nav-item"><a class="nav-link" th:href="@{/getCart}">Carrito</a></li>
+										<li class="nav-item"><a class="nav-link" th:href="@{/usuario/login}">Login</a></li>
+									</ul>
+								</div>
+			</div>
+	</div>
+	<!--/Header-->
+	</nav>
+	</div>
+
+
+	<header th:fragment="header-user">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+			<div class="container">
+				<a class="navbar-brand" th:href="@{/}"><strong>Spring eComerce Logueado</strong></a>
+				<form class="d-flex" role="search" method="post" th:action="@{/search}">
+					<input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search"
+						name="nombre" autocomplete="off">
+					<button class="btn btn-outline-success " type="submit">Buscar</button>
+				</form>
+
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
 					data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
 					aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 
-				<!-- ENLACES DEL MENU -->
-
-
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-						<li class="nav-item"><a class="nav-link" th:href="@{/administrador}">Home Usu s	</a></li>
-						<li class="nav-item"><a class="nav-link" th:href="@{/productos/listProduct}">Productos</a></li>
-						<li class="nav-item"><a class="nav-link" th:href="@{/views/listUser}">Usuarios</a></li>					
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="usuarioDropdown" role="button"
-								data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-								Productos
-							</a>
-
-							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="usuarioDropdown">
-								<li><a class="dropdown-item" th:href="@{/productos}">Crear Producto</a></li>
-								<li><a class="dropdown-item" th:href="@{/}">Agregar usuario</a></li>
-							</ul>
-						</li>
+						<li class="nav-item"><a class="nav-link" th:href="@{/usuario/compras}">Compras</a></li>
 						<li class="nav-item"><a class="nav-link" th:href="@{/getCart}">Carrito</a></li>
-						<li class="nav-item"><a class="nav-link" th:href="@{/views/listGastos}">Login</a></li>
+						<li class="nav-item"><a class="nav-link" th:href="@{/usuario/cerrar}">Salir</a>
+						</li>
+
 					</ul>
-					<form class="d-flex" role="search">
-						<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-						<button class="btn btn-outline-success" type="submit">Buscar</button>
-					</form>
-					 
-				</div>
+
+
 				</div>
 			</div>
 		</nav>
+	</header>
 
-	</div>
 
-	<!-- CONTENIDO -->
-	<div class="container"></div>
+
 
 	<!-- PIE DE PAGINA -->
 	<div th:fragment="footer">
@@ -72,9 +79,7 @@
 			<!-- Bootstrap 5 JS Bundle (incluye Popper) -->
 			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 		</footer>
-
 	</div>
-
 </body>
 
 </html>

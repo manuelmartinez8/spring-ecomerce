@@ -3,7 +3,8 @@ package com.ecomerce.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+import java.util.Optional;import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,8 @@ import com.ecomerce.service.IDetalleOrdenService;
 import com.ecomerce.service.IOrdenService;
 import com.ecomerce.service.IUsuarioService;
 import com.ecomerce.service.ProductoService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/")
@@ -50,8 +53,11 @@ public class HomeController {
 	Orden orden = new Orden();
 	
 	@GetMapping("")
-	public String home(Model model) {
+	public String home(Model model, HttpSession session) {
+		LOGGER.info("Sesio del usuario:  {}",session.getAttribute("idusuario"));
+		
 		model.addAttribute("productos", productoService.findAll());
+		model.addAttribute("sesion", session.getAttribute("idusuario"));
 		return "usuario/home";
 	}
 	
@@ -118,15 +124,16 @@ public class HomeController {
 	}
 	
 	@GetMapping("/getCart")
-	public String getCart(Model model) {
+	public String getCart(Model model, HttpSession session) {
 		model.addAttribute("cart", detalles);
 		model.addAttribute("orden", orden);	
+		model.addAttribute("sesion", session.getAttribute("idusuario"));
 		return "usuario/carrito";
 	}
 	
 	@GetMapping("/order")
-	public String order(Model model) {
-		Usuario usuario = usuarioService.findById(1).get();
+	public String order(Model model, HttpSession session) {
+		Usuario usuario = usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
 		model.addAttribute("cart", detalles);
 		model.addAttribute("orden", orden);	
 		model.addAttribute("usuario", usuario);	
@@ -134,8 +141,8 @@ public class HomeController {
 	}
 	
 	@GetMapping("/saveOrder")
-	public String saveOrder(Model model) {
-		Usuario usuario = usuarioService.findById(1).get();
+	public String saveOrder(HttpSession session) {
+		Usuario usuario = usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
 		Date fechaCreacion = new Date();
 		orden.setFechaCreacion(fechaCreacion);
 		orden.setNumero(ordenService.generarNumeroOrden());
@@ -156,6 +163,15 @@ public class HomeController {
 		detalles.clear();
 		
 		return "redirect:/";
+	}
+	
+	@PostMapping("/search")
+	public String searchProduct(@RequestParam String nombre,Model model) {
+		LOGGER.info("Nombre del Producto: {}", nombre);
+		List<Producto> productos = productoService.findAll().stream().filter(p ->p.getNombre().contains(nombre)).collect(Collectors.toList());
+		model.addAttribute("productos", productos);
+		
+	return "usuario/home";	
 	}
 
 }
