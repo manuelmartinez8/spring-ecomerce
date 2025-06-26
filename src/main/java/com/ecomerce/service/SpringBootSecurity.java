@@ -21,15 +21,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity // Opcional, por si usas @PreAuthorize, etc.
 public class SpringBootSecurity       {
 	
-	@Autowired
-	private UserDetailsService userDetailService;	 
+	 
+	private UserDetailsService userDetailService;		
+	private final CustomSuccessHandler customSuccessHandler;
 
-	  public SpringBootSecurity(UserDetailsService userDetailService) {
+	  
+
+	  public SpringBootSecurity(UserDetailsService userDetailService, CustomSuccessHandler customSuccessHandler) {
 		super();
 		this.userDetailService = userDetailService;
+		this.customSuccessHandler = customSuccessHandler;
 	}
 
-	  @Bean
+	@Bean
 	    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 	        http
 	            .csrf(csrf -> csrf.disable())
@@ -39,8 +43,13 @@ public class SpringBootSecurity       {
 	            )
 	            .formLogin(login -> login
 	                .loginPage("/usuario/login")
+	                .successHandler(customSuccessHandler) // <- aquí
 	                .permitAll()
-	                .defaultSuccessUrl("/usuario/acceder", true)
+	                .defaultSuccessUrl("/usuario/acceder", true))
+	            	.logout(logout -> logout
+	                    .logoutUrl("/logout")
+	                    .logoutSuccessUrl("/usuario/login?logout")
+	                
 	            );
 
 	        return http.build();
