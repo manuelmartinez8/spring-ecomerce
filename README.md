@@ -1,2 +1,2 @@
 # spring-ecomerce
-Proyecto desarrollado con Springboot thymeleaf y jpa para simular una tienda online
+Proyecto Spring Framework, Spring Boot, Servicios REST, Thymeleaf, Spring MVC, Spring Data JPA, Spring Security
