@@ -8,9 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
+import com.ecomerce.model.Orden;
+import com.ecomerce.service.IOrdenService;
+import com.ecomerce.service.IUsuarioService;
 import com.ecomerce.service.ProductoService;
 
 @Controller
@@ -19,14 +22,46 @@ public class AministradorController {
 	
 	private final Logger LOGGER = LoggerFactory.getLogger(AministradorController.class);
 	
+ 
+	
 	@Autowired
 	private ProductoService productoService;
+	
+	@Autowired
+	private IUsuarioService usuarioService;
+	
+	@Autowired
+	private IOrdenService ordensService;
+	
+	private Logger logg= LoggerFactory.getLogger(AministradorController.class);
 	
 	@GetMapping("")
 	public String home(Model model) {	
 		//List<Producto> productos =  productoService.findAll();
 		model.addAttribute("productos", productoService.findAll());
 		return "/administrador/home";
+	}
+	
+	@GetMapping("/usuarios")
+	public String usuarios(Model model) {
+		model.addAttribute("usuarios", usuarioService.findAll());
+		return "administrador/usuarios";
+	}
+	
+	@GetMapping("/ordenes")
+	public String ordenes(Model model) {
+		model.addAttribute("ordenes", ordensService.findAll());
+		return "administrador/ordenes";
+	}
+	
+	@GetMapping("/detalle/{id}")
+	public String detalle(Model model, @PathVariable Integer id) {
+		logg.info("Id de la orden {}",id);
+		Orden orden= ordensService.findById(id).get();
+		
+		model.addAttribute("detalles", orden.getDetalle());
+		
+		return "administrador/detalleorden";
 	}
 
 }
